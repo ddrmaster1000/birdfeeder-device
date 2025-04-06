@@ -1,0 +1,35 @@
+[project]
+name = "device"
+version = "0.1.0"
+description = "Bird Feeder Device Program for Raspberry Pi 5 and Windows"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "transformers>=4.51.0",
+    "numpy>=2.2.4",
+    "Pillow>=11.1.0",
+    "accelerate>=1.6.0"
+]
+
+[project.optional-dependencies]
+windows = [
+    "torch>=2.6.0; platform_system=='Windows'",
+    "opencv-python>=4.11.0.86; platform_system=='Windows'"
+]
+raspberry-pi = [
+    "torch>=2.6.0; platform_system=='Linux'",
+    "opencv-python>=4.11.0.86; platform_system=='Linux'",
+    "RPi.GPIO>=0.7.1; platform_system=='Linux'",
+    "picamera2>=0.3.24; platform_system=='Linux'"
+]
+dev = [
+    "pytest>=8.1.0"
+]
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = ["device"]
