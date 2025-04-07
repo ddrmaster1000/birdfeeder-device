@@ -38,13 +38,11 @@ Press Ctrl+C to exit the program safely.
 
 ## Directory Structure
 
-- `data/`
-  - `images/` - Captured images and bird thumbnails
-  - `videos/` - Recorded videos
+- `data/` Captured images and bird thumbnails, Recorded videos
 - `motion_sensor.py` - Motion detection module
 - `camera.py` - Camera handling module
 - `bird_detector.py` - Bird detection using Vision Transformer (ViT)
-- `main.py` - Main program
+- `main.py` - Main program, handling motion detection and image/video capture
 
 ## Local Setup
 ```uv pip install -e .[windows,dev]```
