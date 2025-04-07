@@ -51,3 +51,4 @@ Press Ctrl+C to exit the program safely.
 
 ## Testing
 ```python -m pytest tests/test_bird_detector.py -v```
+Use the -t flag to test a specific jpg file rather than taking an image with your camera.

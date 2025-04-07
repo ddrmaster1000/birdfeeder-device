@@ -4,7 +4,7 @@ from pathlib import Path
 from PIL import Image
 import shutil
 
-from device.bird_detector import BirdDetector
+from bird_detector import BirdDetector
 
 TEST_IMAGES_DIR = Path(__file__).parent / "images"
 FINCH_IMAGE_PATH = TEST_IMAGES_DIR / "finch.jpg"

@@ -3,6 +3,7 @@ from transformers import AutoImageProcessor, AutoModelForImageClassification
 from PIL import Image
 from pathlib import Path
 import logging
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +22,7 @@ class BirdDetector:
             138, 139, 140, 141, 142, 143, 144, 145, 146, 448
         }
 
-    def detect_bird(self, image_path: Path) -> tuple[bool, Path | None]:
+    def detect_bird(self, image_path: Path, output_file_path: Path, output_dir: Path) -> tuple[bool, Path | None]:
         """
         Detect if a bird is present in the image and return cropped thumbnail if found.
         Returns (is_bird_present, thumbnail_path)
@@ -44,9 +45,8 @@ class BirdDetector:
             thumbnail = image.copy()
             thumbnail.thumbnail(thumbnail_size)
             
-            # Save thumbnail
-            thumbnail_path = image_path.parent / f"{image_path.stem}_thumb{image_path.suffix}"
-            thumbnail.save(thumbnail_path)
-            return True, thumbnail_path
+            # Save thumbnail in output directory
+            thumbnail.save(output_file_path)
+            return True, output_file_path
         
         return False, None

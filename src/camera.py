@@ -3,16 +3,14 @@ import platform
 from pathlib import Path
 from datetime import datetime
 import time
-import os
-import random
 
 class BaseCamera:
     """Base class for camera implementations."""
-    def capture_image(self, output_dir: Path) -> Path:
+    def capture_image(self, output_dir: Path, file_name: str, event_time: datetime) -> Path:
         """Capture a still image and save it to the specified directory."""
         raise NotImplementedError
 
-    def record_for_duration(self, output_dir: Path, duration_seconds: float) -> Path:
+    def record_for_duration(self, output_dir: Path, file_name: str, duration_seconds: float, event_time: datetime) -> Path:
         """Record video for a specified duration."""
         raise NotImplementedError
 
@@ -35,28 +33,22 @@ class WindowsCamera(BaseCamera):
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
         
         # Allow camera to warm up
-        time.sleep(1)
+        time.sleep(.5)
 
-    def capture_image(self, output_dir: Path) -> Path:
+    def capture_image(self, output_dir: Path, file_name: str, event_time: datetime) -> Path:
         """Capture a still image and save it to the specified directory."""
         ret, frame = self.cap.read()
         if not ret:
             raise RuntimeError("Failed to capture image")
         
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        date_dir = output_dir / datetime.now().strftime("%Y-%m-%d")
-        date_dir.mkdir(parents=True, exist_ok=True)
-        image_path = date_dir / f"image_{timestamp}.png"
+        image_path = output_dir / file_name
         self.cv2.imwrite(str(image_path), frame)
         
         return image_path
 
-    def record_for_duration(self, output_dir: Path, duration_seconds: float) -> Path:
+    def record_for_duration(self, output_dir: Path, file_name: str, duration_seconds: float, event_time: datetime) -> Path:
         """Record video for a specified duration."""
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        date_dir = output_dir / datetime.now().strftime("%Y-%m-%d")
-        date_dir.mkdir(parents=True, exist_ok=True)
-        video_path = date_dir / f"video_{timestamp}.mp4"
+        video_path = output_dir / file_name
         
         # Define the codec and create VideoWriter object
         fourcc = self.cv2.VideoWriter_fourcc(*'mp4v')
@@ -103,21 +95,15 @@ class RaspberryPiCamera(BaseCamera):
         except ImportError:
             raise ImportError("picamera2 is required for Raspberry Pi camera")
 
-    def capture_image(self, output_dir: Path) -> Path:
+    def capture_image(self, output_dir: Path, file_name: str, event_time: datetime) -> Path:
         """Capture a still image and save it to the specified directory."""
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        date_dir = output_dir / datetime.now().strftime("%Y-%m-%d")
-        date_dir.mkdir(parents=True, exist_ok=True)
-        image_path = date_dir / f"image_{timestamp}.png"
+        image_path = output_dir / file_name
         self.camera.capture_file(str(image_path))
         return image_path
 
-    def record_for_duration(self, output_dir: Path, duration_seconds: float) -> Path:
+    def record_for_duration(self, output_dir: Path, file_name: str, duration_seconds: float, event_time: datetime) -> Path:
         """Record video for a specified duration."""
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        date_dir = output_dir / datetime.now().strftime("%Y-%m-%d")
-        date_dir.mkdir(parents=True, exist_ok=True)
-        video_path = date_dir / f"video_{timestamp}.mp4"
+        video_path = output_dir / file_name
         self.camera.start_recording(str(video_path))
         time.sleep(duration_seconds)
         self.camera.stop_recording()

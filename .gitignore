@@ -23,7 +23,7 @@ build/
 
 # Logs
 *.log
-src/device/data/*
+src/data/*
 
 # Operating System files
 .DS_Store

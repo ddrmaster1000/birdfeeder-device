@@ -8,7 +8,8 @@ dependencies = [
     "transformers>=4.51.0",
     "numpy>=2.2.4",
     "Pillow>=11.1.0",
-    "accelerate>=1.6.0"
+    "accelerate>=1.6.0",
+    "boto3>=1.37.28"
 ]
 
 [project.optional-dependencies]
@@ -32,4 +33,3 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
-packages = ["device"]
